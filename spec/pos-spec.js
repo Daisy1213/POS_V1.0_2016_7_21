@@ -59,7 +59,45 @@
                 {barcode: "ITEM000003", amount: 2.5},
                 {barcode: "ITEM000005", amount: 3},
             ];
-            let output = getCartItems(input,loadAllItems());
+            let allItems = [
+                {
+                    barcode: 'ITEM000000',
+                    name: '可口可乐',
+                    unit: '瓶',
+                    price: 3.00
+                },
+                {
+                    barcode: 'ITEM000001',
+                    name: '雪碧',
+                    unit: '瓶',
+                    price: 3.00
+                },
+                {
+                    barcode: 'ITEM000002',
+                    name: '苹果',
+                    unit: '斤',
+                    price: 5.50
+                },
+                {
+                    barcode: 'ITEM000003',
+                    name: '荔枝',
+                    unit: '斤',
+                    price: 15.00
+                },
+                {
+                    barcode: 'ITEM000004',
+                    name: '电池',
+                    unit: '个',
+                    price: 2.00
+                },
+                {
+                    barcode: 'ITEM000005',
+                    name: '方便面',
+                    unit: '袋',
+                    price: 4.50
+                }
+            ];
+            let output = getCartItems(input, allItems);
             let result = [
                 {
                     barcode: 'ITEM000001',
@@ -203,7 +241,17 @@
                     subTotal: 13.5
                 }
             ];
-            let output = getDiscountItems(input, loadPromotions());
+            let promotionsItems = [
+                {
+                    type: 'BUY_TWO_GET_ONE_FREE',
+                    barcodes: [
+                        'ITEM000000',
+                        'ITEM000001',
+                        'ITEM000005'
+                    ]
+                }
+            ];
+            let output = getDiscountItems(input, promotionsItems);
             let result = [
                 {
                     barcode: 'ITEM000001',
@@ -305,7 +353,9 @@
                     discountSubTotal: 9
                 }
             ];
-            let output = getSaveMoney(getTotal(input), getDiscountTotal(input));
+            let total = 66;
+            let discountTotal = 58.5;
+            let output = getSaveMoney(total, discountTotal);
             expect(output).toEqual(7.5);
         })
     })
@@ -341,10 +391,11 @@
                     discountSubTotal: 9
                 }
             ];
-            let inputTwo = getDiscountTotal(inputOne);
-            let inputThree = getSaveMoney(getTotal(inputOne), getDiscountTotal(inputOne));
-            let output = print(inputOne, inputTwo, inputThree);
-            let result = "******<没钱赚商店>收据******" + "\n" +
+            spyOn(console, "log");
+            let inputTwo = 58.5;
+            let inputThree = 7.5;
+            print(inputOne, inputTwo, inputThree);
+            let result = "\n******<没钱赚商店>收据******" + "\n" +
             "名称:雪碧, 数量:5, 单价:3(元), 小计:12(元)" + "\n" +
             "名称:荔枝, 数量:2.5, 单价:15(元), 小计:37.5(元)" + "\n" +
             "名称:方便面, 数量:3, 单价:4.5(元), 小计:9(元)" + "\n" +
@@ -352,7 +403,7 @@
             "总计:58.5(元)" + "\n" +
             "节省:7.5(元)" + "\n" +
             "*************";
-            expect(output).toEqual(result);
+            expect(console.log).toHaveBeenCalledWith(result);
         });
     });
 

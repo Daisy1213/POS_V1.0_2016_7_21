@@ -11,7 +11,7 @@ let tags = [
     'ITEM000005-2',
     ];
 
-function printReceipt() {
+function printReceipt(){
     let allItems = loadAllItems();
     let promotions = loadPromotions();
     let barcodes = formatTags(tags);
@@ -22,24 +22,23 @@ function printReceipt() {
     let discountItems = getDiscountItems(subTotalItems, promotions);
     let discountTotal = getDiscountTotal(discountItems);
     let save = getSaveMoney(total, discountTotal);
-    print(subTotalItems, discountTotal, save);
+    print(discountItems, discountTotal, save);
 }
 
 function formatTags(tags){
     return tags.map((tag) => {
         let splitTag = tag.split("-");
-        return {barcode: splitTag[0], amount: parseFloat(splitTag[1] || 1)};
+        return {barcode: splitTag[0], amount: parseFloat(splitTag[1]) || 1};
     })
 }
-
-function mergeBarcodes(barcodes){
-    let mergedItems= [];
+function mergeBarcodes(barcodes) {
+    let mergedItems = [];
     for(let barcode of barcodes){
-        let exsitItem = mergedItems.find((item) => {
+        let existItem = mergedItems.find((item) => {
             return item.barcode === barcode.barcode;
         });
-        if(exsitItem){
-            exsitItem.amount += barcode.amount;
+        if(existItem){
+            existItem.amount += barcode.amount;
         }else{
             mergedItems.push({barcode: barcode.barcode, amount: barcode.amount});
         }
@@ -49,11 +48,13 @@ function mergeBarcodes(barcodes){
 
 function getCartItems(mergedItems, allItems){
     let cartItems = [];
-    for(let mergedItem of mergedItems){
-        let exsitItem = allItems.find((item) => {
-            return item.barcode === mergedItem.barcode;
+    for(let item of mergedItems){
+        let existItem = allItems.find((element) =>{
+            return element.barcode === item.barcode;
         });
-        cartItems.push(Object.assign({}, exsitItem, {amount: mergedItem.amount}));
+        if(existItem){
+            cartItems.push(Object.assign({}, existItem, {amount: item.amount}));
+        }
     }
     return cartItems;
 }
@@ -76,9 +77,10 @@ function getTotal(subTotalItems){
 }
 
 function getDiscountItems(subTotalItems, promotions){
+
     for(let item of subTotalItems){
-         let exsitItem = promotions.find((element) => {
-             return element.barcodes.find((barcode) => {
+        let exsitItem = promotions.find((element) => {
+            return element.barcodes.find((barcode) => {
                 return barcode === item.barcode;
             });
         });
@@ -92,9 +94,9 @@ function getDiscountItems(subTotalItems, promotions){
     return subTotalItems;
 }
 
-function getDiscountTotal(discountItems){
+function getDiscountTotal(subTotalItems){
     let discountTotal = 0;
-    for(let item of discountItems){
+    for(let item of subTotalItems){
         discountTotal += item.discountSubTotal;
     }
     return discountTotal;
@@ -105,17 +107,15 @@ function getSaveMoney(total, discountTotal){
     return save;
 }
 
-
 function print(subTotalItems, discountTotal, save){
-    let receipt = "******<没钱赚商店>收据******\n";
+    let receipt = "\n******<没钱赚商店>收据******" + "\n";
     for(let item of subTotalItems){
-        receipt += "名称:" + item.name + ", 数量:" + item.amount + ", 单价:" + item.price + "(元)" + ", 小计:" + item.discountSubTotal
-        + "(元)\n"
+        receipt += "名称:" + item.name + ", 数量:" + item.amount + ", 单价:" + item.price + "(元)" + ", 小计:"
+            + item.discountSubTotal + "(元)\n";
     }
-
-    receipt +=  ("----------------------------\n" + "总计:" + discountTotal + "(元)\n"
-    + "节省:" + save + "(元)\n" + "*************");
-    return receipt;
+    receipt += ("----------------------------\n" + "总计:" + discountTotal + "(元)\n" + "节省:" + save + "(元)\n")
+            + "*************";
+    console.log(receipt);
 }
 
 
@@ -123,10 +123,4 @@ function print(subTotalItems, discountTotal, save){
 
 
 
-
-
-
-
-
-
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        1
