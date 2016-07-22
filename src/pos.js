@@ -11,18 +11,19 @@ let tags = [
     'ITEM000005-2',
     ];
 
-let allItems = loadAllItems();
-let promotions = loadPromotions();
-let barcodes = formatTags(tags);
-let mergedItems = mergeBarcodes(barcodes);
-let cartItems = getCartItems(mergedItems, allItems);
-let subTotalItems = getSubTotalItems(cartItems);
-let total = getTotal(subTotalItems);
-let discountItems = getDiscountItems(subTotalItems, promotions);
-let discountTotal = getDiscountTotal(discountItems);
-let save = getSaveMoney(total, discountTotal);
-printReceipt(subTotalItems, discountTotal, save);
-
+function printReceipt() {
+    let allItems = loadAllItems();
+    let promotions = loadPromotions();
+    let barcodes = formatTags(tags);
+    let mergedItems = mergeBarcodes(barcodes);
+    let cartItems = getCartItems(mergedItems, allItems);
+    let subTotalItems = getSubTotalItems(cartItems);
+    let total = getTotal(subTotalItems);
+    let discountItems = getDiscountItems(subTotalItems, promotions);
+    let discountTotal = getDiscountTotal(discountItems);
+    let save = getSaveMoney(total, discountTotal);
+    print(subTotalItems, discountTotal, save);
+}
 
 function formatTags(tags){
     return tags.map((tag) => {
@@ -105,7 +106,7 @@ function getSaveMoney(total, discountTotal){
 }
 
 
-function printReceipt(subTotalItems, discountTotal, save){
+function print(subTotalItems, discountTotal, save){
     let receipt = "******<没钱赚商店>收据******\n";
     for(let item of subTotalItems){
         receipt += "名称:" + item.name + ", 数量:" + item.amount + ", 单价:" + item.price + "(元)" + ", 小计:" + item.discountSubTotal

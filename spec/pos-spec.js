@@ -42,7 +42,7 @@
                 {barcode: "ITEM000005", amount: 2}
             ];
 
-            let output = mergeBarcodes(barcodes);
+            let output = mergeBarcodes(input);
             let result = [
                 {barcode: "ITEM000001", amount: 5},
                 {barcode: "ITEM000003", amount: 2.5},
@@ -239,7 +239,35 @@
 
     describe("getdiscountTotal", function(){
         it("should get discounted total", function(){
-            let input = discountItems;
+            let input = [
+                {
+                    barcode: 'ITEM000001',
+                    name: '雪碧',
+                    unit: '瓶',
+                    price: 3.00,
+                    amount: 5,
+                    subTotal: 15,
+                    discountSubTotal: 12
+                },
+                {
+                    barcode: 'ITEM000003',
+                    name: '荔枝',
+                    unit: '斤',
+                    price: 15.00,
+                    amount: 2.5,
+                    subTotal: 37.5,
+                    discountSubTotal: 37.5
+                },
+                {
+                    barcode: 'ITEM000005',
+                    name: '方便面',
+                    unit: '袋',
+                    price: 4.50,
+                    amount: 3,
+                    subTotal: 13.5,
+                    discountSubTotal: 9
+                }
+            ];;
             let output = getDiscountTotal(input);
             let result = 58.5;
             expect(output).toEqual(result);
@@ -315,7 +343,7 @@
             ];
             let inputTwo = getDiscountTotal(inputOne);
             let inputThree = getSaveMoney(getTotal(inputOne), getDiscountTotal(inputOne));
-            let output = printReceipt(inputOne, inputTwo, inputThree);
+            let output = print(inputOne, inputTwo, inputThree);
             let result = "******<没钱赚商店>收据******" + "\n" +
             "名称:雪碧, 数量:5, 单价:3(元), 小计:12(元)" + "\n" +
             "名称:荔枝, 数量:2.5, 单价:15(元), 小计:37.5(元)" + "\n" +
